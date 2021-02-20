@@ -1,40 +1,35 @@
 <template>
-  <div class="hello"></div>
+  <div class="hello">
+    {{ greeting }}
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, toRefs, computed, unref } from "vue";
 
 interface Person {
   name: string;
-  class: string;
   age: number;
 }
 
 export default defineComponent({
+  name: "newDialog",
   props: {
-    success: { type: String },
-    callback: {
-      type: Function as PropType<() => void>
-    },
-    student: {
-      type: Object as PropType<Student>,
+    person: {
+      type: Object as PropType<Person>,
       required: true
     }
   },
-  setup() {},
-  data() {
+  setup(props, ctx) {
+    const { person } = toRefs(props);
+    //unref 处理reactive对象为不需要取value
+    const newPerson = unref(person);
+    const greeting = computed(() => {
+      return `${newPerson.name}今年${newPerson.age}岁`;
+    });
     return {
-      message: "Vue3 code style"
+      greeting
     };
-  },
-  computed: {
-    reversedMessage(): string {
-      return this.message
-        .split(" ")
-        .reverse()
-        .join("");
-    }
   }
 });
 </script>

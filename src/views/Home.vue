@@ -1,17 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <Dialog msg="Welcome to Your Vue.js + TypeScript App" />
+    <new-dialog :person="person"></new-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Dialog from "@/components/dialog.vue"; // @ is an alias to /src
-
-@Options({
+import { reactive } from "vue";
+import NewDialog from "../components/dialog.vue";
+interface Person {
+  name: string;
+  age: number;
+}
+export default {
   components: {
-    Dialog
+    NewDialog
+  },
+  setup() {
+    const person = reactive<Person>({ name: "小红", age: 18 });
+    console.log(person);
+    return {
+      person
+    };
   }
-})
+};
 </script>
