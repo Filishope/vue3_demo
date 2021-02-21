@@ -17,7 +17,6 @@ export default {
   },
   setup() {
     const person = reactive<Person>({ name: "小红", age: 18 });
-    console.log(person);
     return {
       person
     };
