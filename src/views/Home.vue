@@ -12,6 +12,7 @@ interface Person {
   age: number;
 }
 export default {
+  name: "home",
   components: {
     NewDialog
   },
