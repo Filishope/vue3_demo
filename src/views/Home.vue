@@ -4,6 +4,7 @@
     <new-dialog
       :person="person"
       v-model:isShow="isShow"
+      :isTeleport="true"
       @change-message="changeMessage"
     ></new-dialog>
   </div>

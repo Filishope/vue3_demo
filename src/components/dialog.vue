@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <teleport to="#app">
+    <teleport to="#app" :disabled="!isTeleport">
       <div v-if="showDialog" class="dialog">
         <div>{{ greeting }}</div>
         <button @click="addAge">年龄增长</button>
@@ -20,6 +20,7 @@ import {
   computed,
   unref,
   ref,
+  toRef,
   onMounted
 } from "vue";
 
@@ -35,12 +36,18 @@ export default defineComponent({
       type: Object as PropType<Person>,
       required: true
     },
-    isShow: Boolean
+    isShow: Boolean,
+    isTeleport: {
+      type: Boolean,
+      default: true
+    }
   },
   emit: ["update:isShow", "change-message"],
   setup(props, ctx) {
     //data
     const { person, isShow } = toRefs(props);
+    const isTeleport = toRef(props, "isTeleport");
+    console.log(isTeleport, "isTeleport");
     const showDialog = ref(false);
     //unref 处理reactive对象为不需要取value
     const newPerson = unref(person);
