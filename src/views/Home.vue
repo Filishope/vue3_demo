@@ -25,7 +25,6 @@ export default {
     const isShow = ref(false);
     const person = reactive<Person>({ name: "小红", age: 18 });
     const handleClick = () => {
-      console.log(isShow);
       isShow.value = true;
     };
     const changeMessage = (age: number) => {

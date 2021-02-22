@@ -13,12 +13,14 @@
 <script lang="ts">
 import {
   watch,
+  watchEffect,
   defineComponent,
   PropType,
   toRefs,
   computed,
   unref,
-  ref
+  ref,
+  onMounted
 } from "vue";
 
 interface Person {
@@ -32,22 +34,37 @@ export default defineComponent({
     person: {
       type: Object as PropType<Person>,
       required: true
-    }
+    },
+    isShow: Boolean
   },
   emit: ["update:isShow", "change-message"],
   setup(props, ctx) {
-    console.log(ctx);
-    const { person } = toRefs(props);
-    const showDialog = ref(true);
+    //data
+    const { person, isShow } = toRefs(props);
+    const showDialog = ref(false);
     //unref 处理reactive对象为不需要取value
     const newPerson = unref(person);
 
+    //computed
     const greeting = computed(() => {
       return `${newPerson.name}今年${newPerson.age}岁`;
     });
 
-    // watch(isShow, val => {});
+    //watch or watchEffect
+    // watch(isShow, val => {
+    //   showDialog.value = val;
+    // });
 
+    watchEffect(() => {
+      showDialog.value = isShow.value;
+    });
+
+    //hooks
+    onMounted(() => {
+      console.log("mounted");
+    });
+
+    //methods
     const closeDialog = () => {
       ctx.emit("update:isShow", false);
     };
@@ -68,6 +85,7 @@ export default defineComponent({
   display: flex;
   width: 800px;
   height: 500px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -75,5 +93,9 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 1px 2px 10px 1px rgba(35, 52, 85, 0.11);
+  background: #fff;
+  * {
+    margin-bottom: 12px;
+  }
 }
 </style>
